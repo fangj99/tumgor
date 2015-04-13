@@ -9,3 +9,7 @@ Deploy the account system & community system with different APPID, config the li
 ~   tumgor-chaos
 
     a community system.
+    
+~   demo
+
+    http://a.sadpast.com
