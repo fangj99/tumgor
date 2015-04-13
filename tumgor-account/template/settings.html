@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+{% block content %}
+      <div class="hero-unit">
+      {% if user %}
+        <h2>{% if not register %}完善资料{% else %}注册成功{% endif %}</h2>
+          <form class="form-horizontal" method="post"{% if register %} action="/user/settings"{% endif %}>
+            <fieldset>
+              <div class="control-group">
+                <label class="control-label" for="input01">帐号</label>
+                <div class="controls">
+                  <input type="hidden" class="input-xlarge" id="input08" name="type" value="info" />
+                  <input type="hidden" class="input-xlarge" id="input01" name="username"{% if user.username %} value="{{ user.username|escape }}"{% endif %} />
+                  <span class="help-inline">{% if user.username %}{{ user.username|escape }}{% endif %}</span>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="input02">姓名</label>
+                <div class="controls">
+                  <input type="text" class="input-xlarge" id="input02" name="realname"{% if user.realname %} value="{{ user.realname|escape }}"{% endif %} />
+                </div>
+              </div>
+              <div class="control-group{% ifequal error '4' %} error{% endifequal %}">
+                <label class="control-label" for="input03">邮箱</label>
+                <div class="controls">
+                  {% if register %}<input type="hidden" class="input-xlarge" id="input09" name="register" value="True" />{% endif %}
+                  <input type="email" class="input-xlarge" id="input03" name="email"{% if email %} value="{{ email }}"{% else %}{% if user.email %} value="{{ user.email|escape }}"{% endif %}{% endif %} />
+                  <span class="help-inline">
+                  {% if register and not error %}为了帐号安全，最好补充常用的Email。{% endif %}
+                  {% ifequal error '4' %}请输入合法的邮箱地址{% endifequal %}
+                  </span>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="textarea">公开页面</label>
+                <div class="controls">
+                  <textarea class="input-xxlarge" id="textarea" rows="13" name="other">{% if user and user.other %}{{ user.other|escape }}{% endif %}</textarea>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">{% if not register %}保存{% else %}完成注册{% endif %}</button>
+                <a href="/" class="btn">{% if not register %}取消{% else %}跳过设置{% endif %}</a>
+              </div>
+            </fieldset>
+          </form>
+        {% if not register %}
+        <h2>修改密码</h2>
+          <form class="form-horizontal" method="post">
+            <fieldset>
+              <div class="control-group{% ifequal error '1' %} error{% endifequal %}">
+                <label class="control-label" for="input04">当前密码</label>
+                <div class="controls">
+                  <input type="hidden" class="input-xlarge" id="input09" name="type" value="password" />
+                  <input type="hidden" class="input-xlarge" id="input07" name="username"{% if user.username %} value="{{ user.username|escape }}"{% endif %} />
+                  <input type="password" class="input-xlarge" id="input04" name="password" />
+                  <span class="help-inline">
+                  {% ifequal error '1' %}密码错误{% endifequal %}
+                  </span>
+                </div>
+              </div>
+              <div class="control-group{% ifequal error '2' %} error{% endifequal %}{% ifequal error '3' %} error{% endifequal %}">
+                <label class="control-label" for="input05">新密码</label>
+                <div class="controls">
+                  <input type="password" class="input-xlarge" id="input05" name="password1" />
+                  <span class="help-inline">
+                  {% ifequal error '2' %}请输入正确的新密码{% endifequal %}
+                  {% ifequal error '3' %}新密码和原密码相同{% endifequal %}
+                  </span>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="input06">重复新密码</label>
+                <div class="controls">
+                  <input type="password" class="input-xlarge" id="input06" name="password2" />
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">修改</button>
+                <a href="/" class="btn">取消</a>
+                <a href="/user/forgot">忘记密码</a>
+              </div>
+            </fieldset>
+          </form>
+        {% endif %}
+      {% endif %}
+      </div>
+{% endblock %}

@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>{% block title %}{% endblock %}{% if system and system.name %}{{ system.name|escape }}{% endif %}</title>
+    <meta name="keywords" content="{% if system and system.name %}{{ system.name|escape }}{% endif %}" />
+    <meta name="description" content="{% block description %}{% endblock %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="{{ base }}/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    {% if mobile %}
+    <link href="{{ base }}/static/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />
+    <link href="{{ base }}/static/css/style.mobile.css" rel="stylesheet" />
+    {% else %}
+    <link href="{{ base }}/static/css/style.css" rel="stylesheet" />
+    {% endif %}
+    <script type="text/javascript" src="{{ base }}/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ base }}/static/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand btn btn-inverse" href="{{ base }}/">{% if system and system.name %}{{ system.name|escape }}{% endif %}</a>
+          <div class="btn-group pull-right">
+            {% if user %}
+            {% if user.none_read_notify %}<a href="/notify" class="btn{% ifnotequal user.none_read_notify '0' %} btn-danger{% endifnotequal %}">{{ user.none_read_notify }}</a>{% endif %}
+            <a class="btn" href="{{ base }}/{%if user.username %}{{ user.username|escape }}{% endif %}">
+              <i class="icon-user"></i>{% if user.realname %}{{ user.realname|escape }}{% else %}{%if user.username %}{{ user.username|escape }}{% endif %}{% endif %}
+            </a>
+            <a class="btn dropdown-toggle" data-toggle="dropdown">
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="{{ base }}/user/profile">个人资料</a></li>
+              <li><a href="{{ base }}/user/settings">设置</a></li>
+              <li class="divider"></li>
+              <li><a href="/logout?f={{ url }}">注销</a></li>
+            </ul>
+            {% else %}
+            <a class="btn" href="{{ base }}/user/login?f={{ url }}">登录</a>
+            <a class="btn" href="{{ base }}/user/register">注册</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      {% block content %}{% endblock %}
+      <footer>
+        <p>
+        &copy; 2012
+        <a href="{{ base }}/about">关于</a>
+        </p>
+      </footer>
+    </div>
+</body>
+</html>

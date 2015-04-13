@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+{% block content %}
+      <div class="hero-unit">
+      {% if user %}
+        <h2>个人资料</h2>
+          <form class="form-horizontal">
+            <fieldset>
+              <div class="control-group">
+                <label class="control-label" for="input01">用户名</label>
+                <div class="controls">
+                  <span class="help-inline">{% if user.username %}{{ user.username|escape }}{% endif %}</span>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="input02">姓名</label>
+                <div class="controls">
+                  <span class="help-inline">{% if user.realname %}{{ user.realname|escape }}{% endif %}</span>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="input03">邮箱</label>
+                <div class="controls">
+                  <span class="help-inline">{% if user.email %}{{ user.email|escape }}{% endif %}</span>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="input04">注册时间</label>
+                <div class="controls">
+                  <span class="help-inline">{% if user.created %}{{ user.created|timezone:8|date:"Y-m-d H:i:s" }}{% endif %}</span>
+                </div>
+              </div>
+              <div class="form-actions">
+                <a href="/user/settings" class="btn btn-primary">修改</a>
+              </div>
+            </fieldset>
+          </form>
+      {% endif %}
+      </div>
+{% endblock %}

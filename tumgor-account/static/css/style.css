@@ -1,0 +1,24 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+.navbar .brand {
+    font-weight: bold;
+}
+pre {
+    border: none;
+    background: none;
+    font-size: 16px;
+}
+tr.topic{
+    height: 64px;
+}
+tr.topic td {
+    vertical-align: middle;
+}
+.topic .avatar, .reply .avatar {
+    width: 48px;
+}
+.topic .title, .reply .title {
+    font-size:16px;
+}

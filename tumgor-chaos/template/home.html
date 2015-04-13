@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}{% if user.none_read_notify %}{% ifnotequal user.none_read_notify '0' %}({{ user.none_read_notify }}) {% endifnotequal %}{% endif %}{% endblock %}
+{% block description %}{% if system and system.description %}{{ system.description|escape }}{% endif %}{% endblock %}
+{% block content %}
+      <div class="well">
+        <div class="row-fluid">
+            {% if hot_t %}
+            <div class="span10">
+            {% for t in hot_t %}
+                <a href="/t/{{ t|escape }}" class="btn">{{ t }}</a>
+            {% endfor %}
+            </div>
+            {% endif %}
+            <div class="span2">
+                <a id="create-topic" class="btn btn-info pull-right" href="/topic/create">发起新话题</a>
+            </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        {% if topics %}
+        <table class="table">
+        <tbody>
+        {% for topic in topics %}
+            <tr class="topic">
+                <td class="avatar">
+                <img src="{{ base }}/{{ topic.author }}/avatar?s=47" />
+                </td>
+                <td>
+                <a class="title" href="/topic/{{ topic.key.id }}">{{ topic.title }}</a>
+                <span class="label pull-right">{{ topic.reply|length }}</span>
+                <br />
+                <span class="muted"><a class="author topic-author muted" href="{{ base }}/{{ topic.author|escape }}">{{ topic.author }}</a> @ {{ topic.created|timezone:8|date:"Y-m-d H:i:s" }}</span>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        {% endif %}
+        
+        {% if prev_page or next_page %}
+        <div class="well">
+        {% if prev_page %}
+            {% ifequal prev_page 1 %}
+            <a href="/" class="btn">上一页</a>
+            {% else %}
+            <a href="/p/{{ prev_page }}" class="btn">上一页</a>
+            {% endifequal %}
+        {% endif %}
+        {% if next_page %}
+            <a href="/p/{{ next_page }}" class="btn pull-right clear">下一页</a>
+        {% endif %}
+        </div>
+        {% endif %}
+      </div>
+{% endblock %}

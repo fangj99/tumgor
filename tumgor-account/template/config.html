@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>系统配置</title>
+    <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <style type="text/css">
+      body {
+        padding-top: 100px;
+        padding-bottom: 40px;
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+      <div class="hero-unit">
+        <h2>系统配置</h2>
+          <form class="form-horizontal" method="post">
+            <fieldset>
+              <div class="control-group{% ifequal error '1' %} error{% endifequal %}">
+                <label class="control-label" for="input01">名称</label>
+                <div class="controls">
+                  <input type="text" class="input-xlarge" id="input01" name="name" value="{% if error %}{{ name|escape }}{% else %}{% if system and system.name %}{{ system.name|escape }}{% endif %}{% endif %}" />
+                  <span class="help-inline">
+                  {% ifequal error '1' %}请输入名称{% endifequal %}
+                  </span>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="textarea">描述</label>
+                <div class="controls">
+                  <textarea class="input-xlarge" id="textarea" rows="3" name="description">{% if system and system.description %}{{ system.description|escape }}{% endif %}</textarea>
+                </div>
+              </div>
+              <div class="control-group{% ifequal error '2' %} error{% endifequal %}">
+                <label class="control-label" for="input02">邮箱</label>
+                <div class="controls">
+                  <input type="text" class="input-xlarge" id="input02" name="email" value="{% if error %}{{ email|escape }}{% else %}{% if system and system.email %}{{ system.email|escape }}{% endif %}{% endif %}" />
+                  <span class="help-inline">
+                  {% ifequal error '2' %}请输入正确的邮箱{% endifequal %}
+                  </span>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">保存</button>
+                <a href="/" class="btn">返回</a>
+              </div>
+            </fieldset>
+          </form>
+      </div>
+    </div>
+</body>
+</html>

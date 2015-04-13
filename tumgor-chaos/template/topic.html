@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}{{ topic.title|escape }} - {% endblock %}
+{% block description %}{% for item in topic.t %}{{ item|escape }} {% endfor %}{{ topic.content|escape }}{% endblock %}
+{% block content %}
+      <div class="row">
+        <div class="well">
+         <h2>{{ topic.title|escape }}</h2>
+         <span class="muted"><a class="author topic-author muted" href="{{ base }}/{{ topic.author|escape }}">{{ topic.author }}</a> @ {{ topic.created|timezone:8|date:"Y-m-d H:i:s" }}</span>
+         <br />
+        {% for item in topic.t %} <a href="/t/{{ item|escape }}" class="btn">{{ item|escape }}</a> {% endfor %}
+        </div>
+        {% if topic.content %}<pre>{{ topic.content|escape|urltolink }}</pre>{% endif %}
+        {% if replies %}
+        <table class="table">
+        <tbody>
+            {% for reply in replies %}
+            <tr class="reply">
+                <td class="avatar">
+                <img src="{{ base }}/{{ reply.author|escape }}/avatar?s=47" />
+                </td>
+                <td>
+                <span class="muted"><a class="author reply-author muted" href="{{ base }}/{{ reply.author|escape }}">{{ reply.author|escape }}</a> @ {{ reply.created|timezone:8|date:"Y-m-d H:i:s" }}</span>
+                <pre>{{ reply.content|escape|urltolink }}</pre>
+                {% if user %}<a href="?to={{ reply.author|escape }}" class="icon-comment pull-right muted reply-btn"></a>{% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+        {% endif %}
+        
+        {% if prev_page or next_page %}
+        <div class="well">
+        {% if prev_page %}
+            {% ifequal prev_page 1 %}
+            <a href="/topic/{{ topic.key.id }}" class="btn">上一页</a>
+            {% else %}
+            <a href="/topic/{{ topic.key.id }}/p/{{ prev_page }}" class="btn">上一页</a>
+            {% endifequal %}
+        {% endif %}
+        {% if next_page %}
+            <a href="/topic/{{ topic.key.id }}/p/{{ next_page }}" class="btn pull-right">下一页</a>
+        {% endif %}
+        </div>
+        {% endif %}
+        {% if user %}
+          <form class="well" method="post">
+            <textarea class="input-xxlarge reply-content" id="textarea01" rows="7" name="content"">{% if to %}@{{ to|escape }} {% endif %}</textarea>
+            <p><button type="submit" class="btn btn-primary">提交</button></p>
+          </form>
+        {% else %}
+          <div class="well"><a href="{{ base }}/user/login?f={{ url }}" class="btn btn-info">登录以参与讨论</a></div>
+        {% endif %}
+      </div>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $("tr.reply .reply-btn").click(function(){
+            var to = $(this).parent().children("span.muted").children(".reply-author").text();
+            
+            var reply_content = $(".reply-content");
+            var old_content = reply_content.val();
+            var prefix = "@" + to + " ";
+            var new_content = "";
+            
+            if(old_content.length > 0){
+                if (old_content != prefix) {
+                    new_content = old_content + "\n" + prefix;
+                }
+            } else {
+                new_content = prefix;
+            }
+            reply_content.focus();
+            reply_content.val(new_content);
+            return false;
+        });
+        $("pre a").each(function(){
+            var url = $(this).attr("href");
+            $(this).html("<img src=" + url + " />");
+            $(this).children("img").bind("error", function(){
+                $(this).parent().text(url);
+            });
+        });
+      });
+    </script>
+{% endblock %}

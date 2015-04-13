@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}提醒 - {% endblock %}
+{% block description %}{% if system and system.description %}{{ system.description|escape }}{% endif %}{% endblock %}
+{% block content %}
+      <div class="well">
+        <h2>提醒</h2>
+        {% if notify %}
+        <table class="table">
+        <tbody>
+        {% for item in notify %}
+            <tr class="notify">
+                <td>
+                {% ifequal item.type 'reply' %}
+                {{ item.author }} 在话题 <a class="title" href="/topic/{{ item.topic.key.id }}">{{ item.topic.title }}</a> 上提到了您：
+                {% else %}
+                您发起的话题 <a class="title" href="/topic/{{ item.topic.key.id }}">{{ item.topic.title }}</a> 有了 {{ item.author }} 的新回应：
+                {% endifequal %}
+                <br />
+                {{ item.reply.content }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        {% else %}
+        暂时没有提醒。
+        {% endif %}
+      </div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}忘记密码 {% endblock %}
+{% block content %}
+      <div class="hero-unit">
+        <h2>忘记密码</h2>
+          <form class="form-horizontal" method="post">
+            <fieldset>
+              {% ifequal error '0' %}
+              <div class="form-actions">
+                <h2>提交成功，请检查你的邮箱以按提示进行重置密码。</h2>
+              </div>
+              {% else %}
+              <div class="control-group{% ifequal error '1' %} error{% endifequal %}{% ifequal error '2' %} error{% endifequal %}{% ifequal error '4' %} error{% endifequal %}">
+                <label class="control-label" for="input01">帐号</label>
+                <div class="controls">
+                  <input type="text" class="input-xlarge" id="input01" name="username"{% if username %} value="{{ username|escape }}"{% endif %} />
+                  <span class="help-inline">
+                  {% ifequal error '1' %}帐号长度不符{% endifequal %}
+                  {% ifequal error '2' %}帐号含有非法字符{% endifequal %}
+                  {% ifequal error '4' %}用户不存在{% endifequal %}
+                  </span>
+                </div>
+              </div>
+              <div class="control-group{% ifequal error '3' %} error{% endifequal %}{% ifequal error '5' %} error{% endifequal %}">
+                <label class="control-label" for="input02">邮箱</label>
+                <div class="controls">
+                  <input type="text" class="input-xlarge" id="input02" name="email"{% if email %} value="{{ email|escape }}"{% endif %} />
+                  <span class="help-inline">
+                  {% ifequal error '3' %}请输入合法的邮箱地址{% endifequal %}
+                  {% ifequal error '5' %}邮箱与用户名不匹配{% endifequal %}
+                  </span>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">提交请求</button>
+                尝试<a href="/user/login">登录</a>
+              </div>
+              {% endifequal %}
+            </fieldset>
+          </form>
+      </div>
+{% endblock %}

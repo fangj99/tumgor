@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}登录 {% endblock %}
+{% block content %}
+<div class="hero-unit">
+        <h2>登录</h2>
+          <form class="form-horizontal" method="post">
+            <fieldset>
+              <div class="control-group{% ifequal error '1' %} error{% endifequal %}{% ifequal error '2' %} error{% endifequal %}{% ifequal error '4' %} error{% endifequal %}">
+                <label class="control-label" for="input01">帐号</label>
+                <div class="controls">
+                  <input type="text" class="input-xlarge" id="input01" name="username"{% if username %} value="{{ username|escape }}"{% endif %} />
+                  <span class="help-inline">
+                  {% ifequal error '1' %}帐号太短{% endifequal %}
+                  {% ifequal error '2' %}帐号含有非法字符{% endifequal %}
+                  {% ifequal error '4' %}帐号不存在{% endifequal %}
+                  </span>
+                </div>
+              </div>
+              <div class="control-group{% ifequal error '3' %} error{% endifequal %}{% ifequal error '5' %} error{% endifequal %}">
+                <label class="control-label" for="input01">密码</label>
+                <div class="controls">
+                  <input type="password" class="input-xlarge" id="input02" name="password" />
+                  <span class="help-inline">
+                  {% ifequal error '3' %}请输入密码{% endifequal %}
+                  {% ifequal error '5' %}请输入正确的密码{% endifequal %}
+                  </span>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">登录</button>
+                <a href="/user/forgot">忘记密码？</a>
+                没有帐号？现在<a href="/user/register">注册</a>
+              </div>
+            </fieldset>
+          </form>
+      </div>
+{% endblock %}

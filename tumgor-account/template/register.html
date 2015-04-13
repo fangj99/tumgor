@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}注册 {% endblock %}
+{% block content %}
+      <div class="hero-unit">
+        <h2>注册</h2>
+          <form class="form-horizontal" method="post">
+            <fieldset>
+              <div class="control-group{% ifequal error '1' %} error{% endifequal %}{% ifequal error '2' %} error{% endifequal %}{% ifequal error '4' %} error{% endifequal %}">
+                <label class="control-label" for="input01">帐号</label>
+                <div class="controls">
+                  <input type="text" class="input-xlarge" id="input01" name="username"{% if username %} value="{{ username|escape }}"{% endif %} />
+                  <span class="help-inline">
+                  {% if not error %}6位以上英文字母数字或组合{% endif %}
+                  {% ifequal error '1' %}帐号长度不符{% endifequal %}
+                  {% ifequal error '2' %}帐号含有非法字符{% endifequal %}
+                  {% ifequal error '4' %}用户已存在{% endifequal %}
+                  </span>
+                </div>
+              </div>
+              <div class="control-group{% ifequal error '3' %} error{% endifequal %}">
+                <label class="control-label" for="input02">密码</label>
+                <div class="controls">
+                  <input type="password" class="input-xlarge" id="input02" name="password" />
+                  <span class="help-inline">
+                  {% ifequal error '3' %}请输入密码{% endifequal %}
+                  </span>
+                </div>
+              </div>
+              <div class="control-group{% ifequal error '5' %} error{% endifequal %}">
+                <label class="control-label" for="input03">计算</label>
+                <div class="controls">
+                  <input type="text" class="input-xlarge" id="input03" name="captcha" /> = {% if captcha %}{{ captcha.number1|escape }} {% if captcha.operate %} + {% else %} - {% endif %} {{ captcha.number2|escape }}{% endif %}
+                  <span class="help-inline">
+                  {% ifequal error '5' %}计算不正确{% endifequal %}
+                  </span>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">注册</button>
+                已经注册？现在<a href="/user/login">登录</a>
+              </div>
+            </fieldset>
+          </form>
+      </div>
+{% endblock %}

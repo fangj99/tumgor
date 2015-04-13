@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+{% block content %}
+      <div class="hero-unit">
+        <h1>讨论区</h1>
+        <p id="tips">分享、发现。</p>
+        <p><a href="http://chaos.sadpast.com/" class="btn btn-primary btn-large">进入讨论区</a></p>
+      </div>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $(".hero-unit").hide();
+        var chaos_host = "http://chaos.sadpast.com";
+        $.getJSON(chaos_host + "/json/{{ user.username|escape }}?jsoncallback=?",chaos=function(chaos){
+            var ts = chaos.ts;
+            var topics = chaos.topics;
+            var more = chaos.more;
+            var notify = chaos.notify;
+            var html = '<div class="well"><div class="row-fluid"><div class="span10">';
+            for(i in ts){
+                var t = ts[i];
+                html += ' <a href="' + chaos_host + '/t/' + t.name + '" class="btn">' + t.name + '</a> ';
+            }
+            html += '</div><div class="span2"><a id="create-topic" class="btn btn-info pull-right" href="' + chaos_host + '/topic/create">发起新话题</a></div></div></div><div class="row"><table class="table"><tbody>';
+            for(i in topics){
+                var topic = topics[i];
+                html += '<tr class="topic"><td class="avatar"><img src="/' + topic.author + '/avatar?s=47" /></td><td><a class="title" href="' + chaos_host + '/topic/' + topic.id + '">' + topic.title + '</a><span class="label pull-right">' + topic.reply + '</span>';
+                html += '<br /><span class="muted"><a class="author topic-author muted" href="/' + topic.author + '">' + topic.author + '</a> @ ' + topic.created + '</span></td></tr>';
+            }
+            html += '</tbody></table>'
+            
+            if(more != ""){
+                html += '<div class="well"><a href="' + chaos_host + '/p/2" class="btn pull-right clear">下一页</a></div>';
+            }
+            
+            $(".hero-unit").after($(html));
+            $(".hero-unit").remove();
+            
+            if(notify != ""){
+                if(notify != "0"){
+                    document.title = "(" + notify + ")" + document.title;
+                    $(".navbar .btn-group").prepend($('<a href="' + chaos_host + '/notify" class="btn btn-danger">' + notify + '</a>'));
+                }
+                else{
+                    $(".navbar .btn-group").prepend($('<a href="' + chaos_host + '/notify" class="btn">' + notify + '</a>'));
+                }
+            }
+        });
+      });
+    </script>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}{% if showuser %}{{ showuser.username|escape }} @ {% endif %}{% endblock %}
+{% block content %}
+      <div class="hero-unit">
+      {% if showuser %}
+      {% if user %}{% ifequal user.username showuser.username %}<a href="/user/settings" class="btn btn-info pull-right">更新</a>{% endifequal %}{% endif %}
+        <pre>{% if showuser.other %}{{ showuser.other|escape|urltolink }}{% endif %}</pre>
+      {% endif %}
+      </div>
+{% endblock %}
