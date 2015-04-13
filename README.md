@@ -12,4 +12,4 @@ Deploy the account system & community system with different APPID, config the li
     
 ~   demo
 
-    http://a.sadpast.com
+http://a.sadpast.com
